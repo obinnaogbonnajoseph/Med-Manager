@@ -3,4 +3,8 @@
 
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="app_logo">App Logo</string>
+    <string name="sign_in_button">Sign up or Sign in button</string>
+    <string name="sign_in">Sign up</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>
