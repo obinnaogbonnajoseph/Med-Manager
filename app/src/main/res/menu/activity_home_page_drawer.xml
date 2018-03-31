@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/ic_search"
+            android:title="Search Medications" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_userInfo"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_about"
+            android:title="About Med Remid" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/Settings_24px"
+            android:title="Settings" />
+    </group>
+
+</menu>

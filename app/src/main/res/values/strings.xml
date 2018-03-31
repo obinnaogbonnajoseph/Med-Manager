@@ -5,6 +5,14 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="app_logo">App Logo</string>
     <string name="sign_in_button">Sign up or Sign in button</string>
-    <string name="sign_in">Sign up</string>
+    <string name="sign_in">Sign in</string>
     <string name="already_have_an_account">Already have an account?</string>
+    <string name="title_activity_home_page">HomePageActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_search">Search</string>
+    <string name="collapsing_image">Collapsing Image</string>
+    <string name="empty_view">Empty Image view</string>
 </resources>
