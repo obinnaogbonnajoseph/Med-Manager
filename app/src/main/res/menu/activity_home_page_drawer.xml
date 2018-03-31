@@ -5,19 +5,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_search"
-            android:icon="@drawable/ic_search"
+            android:icon="@drawable/ic_menu_search"
             android:title="Search Medications" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_userInfo"
+            android:icon="@drawable/ic_menu_user_info"
             android:title="My Profile" />
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/ic_about"
-            android:title="About Med Remid" />
+            android:icon="@drawable/ic_menu_about"
+            android:title="About Med Remind" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/Settings_24px"
+            android:icon="@drawable/ic_menu_settings_24px"
             android:title="Settings" />
     </group>
 

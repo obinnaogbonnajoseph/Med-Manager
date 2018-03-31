@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/recycler_background"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <RelativeLayout
@@ -34,6 +35,7 @@
                 android:layout_gravity="center"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textStyle="bold"
+                android:textColor="@android:color/white"
                 tools:text="You have no prescriptions"/>
 
             <TextView
@@ -43,7 +45,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:textColor="@color/black_overlay"
+                android:textColor="@android:color/darker_gray"
                 tools:text="Tap the '+' button to add prescription(s) and get reminders."/>
         </LinearLayout>
 
