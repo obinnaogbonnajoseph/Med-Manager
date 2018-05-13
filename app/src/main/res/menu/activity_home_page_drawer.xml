@@ -4,10 +4,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_search"
-            android:icon="@drawable/ic_menu_search"
-            android:title="Search Medications" />
-        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_user_info"
             android:title="My Profile" />

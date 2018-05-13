@@ -36,7 +36,7 @@
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                tools:text="You have no prescriptions"/>
+                android:text="You have no prescriptions"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
                 android:gravity="center"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
                 android:textColor="@android:color/darker_gray"
-                tools:text="Tap the '+' button to add prescription(s) and get reminders."/>
+                android:text="Tap the '+' button to add prescription(s) and get reminders."/>
         </LinearLayout>
 
     </RelativeLayout>

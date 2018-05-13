@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2016 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Snooze length settings -->
+    <ListPreference
+        android:defaultValue="@string/pref_snooze_length_default"
+        android:entries="@array/pref_snooze_length_options"
+        android:entryValues="@array/pref_snooze_length_values"
+        android:key="@string/pref_snooze_length_key"
+        android:title="@string/pref_snooze_length_label" />
+
+
+    <!-- Vibration settings -->
+    <SwitchPreference
+        android:defaultValue="@bool/vibrations_on"
+        android:key="@string/pref_vibrations_key"
+        android:summaryOff="@string/pref_vibrations_false"
+        android:summaryOn="@string/pref_vibrations_true"
+        android:title="@string/pref_vibrations_label" />
+
+    <!-- Ringtone value -->
+    <RingtonePreference
+        android:key="@string/key_notifications_new_message_ringtone"
+        android:ringtoneType="notification"
+        android:showDefault="true"
+        android:showSilent="true"
+        android:summary="@string/summary_choose_ringtone"
+        android:title="@string/pref_title_ringtone" />
+
+    <!-- Opens the Help activity -->
+    <Preference
+        android:summary="@string/how_to_use"
+        android:title="@string/help">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="" />
+    </Preference>
+</PreferenceScreen>

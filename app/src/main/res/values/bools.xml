@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="no_silent">false</bool>
+    <bool name="vibrations_on">true</bool>
+</resources>

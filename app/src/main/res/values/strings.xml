@@ -7,7 +7,7 @@
     <string name="sign_in_button">Sign up or Sign in button</string>
     <string name="sign_in">Sign in</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="title_activity_home_page">HomePageActivity</string>
+    <string name="title_activity_home_page">My Prescriptions</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -15,4 +15,56 @@
     <string name="action_search">Search</string>
     <string name="collapsing_image">Collapsing Image</string>
     <string name="empty_view">Empty Image view</string>
+    <string name="title_medication">Medication</string>
+    <string name="title_frequency">Frequency</string>
+    <string name="text_select_weekday">Select WeekDay</string>
+    <string name="title_duration">Duration</string>
+    <string name="msg_user_loggedin">Already logged in</string>
+    <string name="text_set_time">Set Time</string>
+    <string name="text_add_description">Add Description</string>
+
+    <string name="web_client_id">1021361710133-jm8kr43u0vje9ng5eac8fda7k9f2ak9v.
+        apps.googleusercontent.com</string>
+    <string name="title_username">Username</string>
+    <string name="title_name">Name</string>
+    <string name="text_sign_in_with_google">Sign in</string>
+    <string name="text_sign_up">Sign Up</string>
+    <string name="content_description_google_sign_in">Google Sign In Button</string>
+    <string name="text_login">Login</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Settings strings -->
+    <string name="pref_snooze_length_label">Snooze Length</string>
+    <string name="pref_snooze_length_default">10</string>
+
+    <string name="pref_snooze_length_label_five">5 minutes</string>
+    <string name="pref_snooze_length_label_ten">10 minutes</string>
+    <string name="pref_snooze_length_five">5</string>
+    <string name="pref_snooze_length_ten">10</string>
+    <string name="pref_snooze_length_key">snooze</string>
+    <string name="pref_silent_false">Not Enabled</string>
+    <string name="pref_silent_true">Enabled</string>
+    <string name="pref_silent_key">silent</string>
+    <string name="pref_silent_label">Silent</string>
+    <string name="pref_vibrations_key">vibrations</string>
+    <string name="pref_vibrations_false">Not Enabled</string>
+    <string name="pref_vibrations_true">Enabled</string>
+    <string name="pref_vibrations_label">Vibration</string>
+    <string name="key_notifications_new_message_ringtone">notifications</string>
+    <string name="summary_choose_ringtone">Choose Notification Sound</string>
+    <string name="pref_title_ringtone">Notification Sound</string>
+    <string name="how_to_use">How to use app</string>
+    <string name="help">Help</string>
+    <string name="title_activity_prescription">Add Prescription</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+    <string name="dialog_unsaved_changes_msg">Discard your changes and quit editing?</string>
+    <string name="discard">Discard</string>
+    <string name="keep_editing">Keep editing</string>
+    <string name="dialog_delete_msg">Delete this prescription?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <string name="action_settings">Settings</string>
 </resources>
