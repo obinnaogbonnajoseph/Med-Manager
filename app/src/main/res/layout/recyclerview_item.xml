@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/listPreferredItemHeightLarge"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:background="@color/recycler_background">
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2"
+            android:textSize="24sp"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nov"
+            android:textColor="@android:color/white"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:background="@drawable/round_bg"
+        app:cardBackgroundColor="@color/colorPrimary">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/med_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Dioxiprine"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:layout_margin="8dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/med_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Takes care of headaches"
+                android:textColor="@android:color/white"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:layout_constraintLeft_toLeftOf="@+id/med_name"
+                app:layout_constraintTop_toBottomOf="@+id/med_name"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

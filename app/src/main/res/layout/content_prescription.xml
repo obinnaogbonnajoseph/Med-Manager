@@ -1,215 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="20dp">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="8dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="20dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/text_hint"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@android:color/white"
-                app:hintTextAppearance="@style/TextAppearance.AppCompat.Title"
-                app:hintAnimationEnabled="true">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_margin="8dp">
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/text_med_name"
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/text_hint"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/title_medication" />
+                    android:textColorHint="@android:color/white"
+                    app:hintTextAppearance="@style/TextAppearance.AppCompat.Title"
+                    app:hintAnimationEnabled="true">
 
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/text_med_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:imeOptions="actionDone"
+                        android:textColor="@android:color/white"
+                        android:hint="@string/title_medication" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardBackgroundColor="@color/colorPrimary"
-        app:cardCornerRadius="20dp">
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp">
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="20dp">
 
-            <TextView
-                android:id="@+id/text_frequency"
-                android:layout_width="304dp"
-                android:layout_height="wrap_content"
-                android:text="@string/title_frequency"
-                android:textAlignment="textStart"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
 
-            <Spinner
-                android:id="@+id/dialog_spinner"
-                android:layout_height="48dp"
-                android:layout_width="wrap_content"
-                android:layout_marginTop="8dp"
-                android:spinnerMode="dropdown"
-                app:layout_constraintLeft_toLeftOf="@+id/text_frequency"
-                app:layout_constraintTop_toBottomOf="@+id/text_frequency" />
+                <TextView
+                    android:id="@+id/text_frequency"
+                    android:layout_width="304dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/title_frequency"
+                    android:textAlignment="textStart"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/text_med_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:text="08:45 AM"
-                android:clickable="true"
-                app:layout_constraintTop_toBottomOf="@+id/dialog_spinner"
-                app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"/>
+                <Spinner
+                    android:id="@+id/dialog_spinner"
+                    android:layout_height="48dp"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_frequency"
+                    app:layout_constraintTop_toBottomOf="@+id/text_frequency" />
 
-            <TextView
-                android:id="@+id/text_med_time_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:text="09:45 AM"
-                android:clickable="true"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@+id/text_med_time"
-                app:layout_constraintBottom_toBottomOf="@+id/text_med_time"
-                app:layout_constraintLeft_toRightOf="@+id/text_med_time"/>
+                <TextView
+                    android:id="@+id/text_med_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:text="08:45 AM"
+                    android:clickable="true"
+                    app:layout_constraintTop_toBottomOf="@+id/dialog_spinner"
+                    app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"/>
 
-            <TextView
-                android:id="@+id/text_med_time_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:textSize="18sp"
-                android:textColor="@android:color/white"
-                android:text="10:45 AM"
-                android:clickable="true"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="@+id/text_med_time_1"
-                app:layout_constraintBottom_toBottomOf="@+id/text_med_time_1"
-                app:layout_constraintLeft_toRightOf="@+id/text_med_time_1"/>
+                <TextView
+                    android:id="@+id/text_med_time_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:text="09:45 AM"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/text_med_time"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_med_time"
+                    app:layout_constraintLeft_toRightOf="@+id/text_med_time"/>
 
-            <Button
-                android:id="@+id/btn_select_weekdays"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/text_select_weekday"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/white"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                app:layout_constraintTop_toBottomOf="@+id/text_med_time"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                <TextView
+                    android:id="@+id/text_med_time_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/white"
+                    android:text="10:45 AM"
+                    android:clickable="true"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toTopOf="@+id/text_med_time_1"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_med_time_1"
+                    app:layout_constraintLeft_toRightOf="@+id/text_med_time_1"/>
 
-            <TextView
-                android:id="@+id/text_duration"
-                android:layout_width="336dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/title_duration"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                android:textColor="@android:color/white"
-                android:textSize="24sp"
-                app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"
-                app:layout_constraintTop_toBottomOf="@+id/btn_select_weekdays" />
+                <Button
+                    android:id="@+id/btn_select_weekdays"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/text_select_weekday"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/white"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    app:layout_constraintTop_toBottomOf="@+id/text_med_time"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
-            <TextView
-                android:id="@+id/text_start_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_date_from_24px"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                app:layout_constraintLeft_toLeftOf="@+id/text_duration"
-                app:layout_constraintTop_toBottomOf="@+id/text_duration"
-                android:text="12 June"/>
+                <TextView
+                    android:id="@+id/text_duration"
+                    android:layout_width="336dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/title_duration"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_select_weekdays" />
 
-            <TextView
-                android:id="@+id/text_start_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="29dp"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@+id/text_start_date"
-                app:layout_constraintLeft_toLeftOf="@+id/text_start_date"
-                android:text="2018"/>
+                <TextView
+                    android:id="@+id/text_start_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_date_from_24px"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_duration"
+                    app:layout_constraintTop_toBottomOf="@+id/text_duration"
+                    android:text="12 June"/>
 
-            <TextView
-                android:id="@+id/text_end_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_date_to_24px"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:layout_marginEnd="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/text_start_date"
-                app:layout_constraintBottom_toBottomOf="@+id/text_start_date"
-                android:text="24 July" />
+                <TextView
+                    android:id="@+id/text_start_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="29dp"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@+id/text_start_date"
+                    app:layout_constraintLeft_toLeftOf="@+id/text_start_date"
+                    android:text="2018"/>
 
-            <TextView
-                android:id="@+id/text_end_year"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="35dp"
-                android:layout_marginTop="8dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@android:color/darker_gray"
-                app:layout_constraintTop_toBottomOf="@+id/text_end_date"
-                app:layout_constraintRight_toRightOf="parent"
-                android:text="2018"/>
-        </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+                <TextView
+                    android:id="@+id/text_end_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:drawableStart="@drawable/ic_date_to_24px"
+                    android:drawablePadding="8dp"
+                    android:gravity="center"
+                    android:layout_marginEnd="16dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/text_start_date"
+                    app:layout_constraintBottom_toBottomOf="@+id/text_start_date"
+                    android:text="24 July" />
 
-    <EditText
-        android:id="@+id/text_note"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:drawableStart="@drawable/ic_note_24px"
-        android:drawablePadding="8dp"
-        android:hint="@string/text_add_description"
-        android:nextFocusUp="@+id/text_note"
-        android:textColor="@android:color/white"
-        android:ems="10"
-        android:inputType="textMultiLine" />
-</LinearLayout>
+                <TextView
+                    android:id="@+id/text_end_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="35dp"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@android:color/darker_gray"
+                    app:layout_constraintTop_toBottomOf="@+id/text_end_date"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:text="2018"/>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <EditText
+            android:id="@+id/text_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:drawableStart="@drawable/ic_note_24px"
+            android:drawablePadding="8dp"
+            android:hint="@string/text_add_description"
+            android:nextFocusUp="@+id/text_note"
+            android:textColor="@android:color/white"
+            android:focusable="false"
+            android:ems="10" />
+    </LinearLayout>
+</layout>

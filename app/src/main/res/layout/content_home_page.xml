@@ -1,53 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/recycler_background"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:background="@color/recycler_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:scrollbars="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+            android:padding="16dp">
 
-        <LinearLayout
-            android:id="@+id/empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="80dp"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
-            
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:textStyle="bold"
-                android:textColor="@android:color/white"
-                android:text="You have no prescriptions"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/my_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:scrollbars="vertical"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="32dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
-                android:textColor="@android:color/darker_gray"
-                android:text="Tap the '+' button to add prescription(s) and get reminders."/>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/empty_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="80dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
-    </RelativeLayout>
-</android.support.v4.widget.NestedScrollView>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:text="You have no prescriptions"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+                    android:textColor="@android:color/darker_gray"
+                    android:text="Tap the '+' button to add prescription(s) and get reminders."/>
+            </LinearLayout>
+
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>
