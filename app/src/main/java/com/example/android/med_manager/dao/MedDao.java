@@ -6,6 +6,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RoomWarnings;
 import android.arch.persistence.room.Update;
 
 import com.example.android.med_manager.data.PrescriptionInfo;
@@ -23,8 +24,8 @@ public interface MedDao {
     LiveData<List<PrescriptionInfo>> getAllMeds();
 
     // For search results
-    @Query("SELECT med_name FROM med_table WHERE med_name LIKE :search")
-    LiveData<List<PrescriptionInfo>> getResults(String search);
+    @Query("SELECT * FROM med_table WHERE med_name LIKE :search")
+    List<PrescriptionInfo> getResults(String search);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(PrescriptionInfo... prescriptions);

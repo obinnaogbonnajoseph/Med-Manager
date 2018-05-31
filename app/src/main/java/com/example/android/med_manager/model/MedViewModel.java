@@ -34,7 +34,5 @@ public class MedViewModel extends AndroidViewModel {
 
     public void update(PrescriptionInfo prescription) {mRepository.update(prescription);}
 
-    public LiveData<List<PrescriptionInfo>> query(String search) {
-        return mRepository.query(search);
-    }
+    public List<PrescriptionInfo> query(String search) { return mRepository.query(search);}
 }

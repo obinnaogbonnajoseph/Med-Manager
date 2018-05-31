@@ -2,15 +2,11 @@ package com.example.android.med_manager.data;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * This is an adapter that adapts the cardview to the
@@ -19,9 +15,8 @@ import java.util.List;
  * integers, strings and nulls
  */
 @Entity(tableName = "med_table")
-public class PrescriptionInfo {
+public class PrescriptionInfo implements Parcelable{
 
-    // TODO: Implement a type converter
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "med_name")
@@ -43,75 +38,144 @@ public class PrescriptionInfo {
     private String timeRemind2;
 
     @ColumnInfo(name = "day_sunday")
-    private int day_sunday;
+    private int daySunday;
 
     @ColumnInfo(name = "day_monday")
-    private int day_monday;
+    private int dayMonday;
 
     @ColumnInfo(name = "day_tuesday")
-    private int day_tuesday;
+    private int dayTuesday;
 
     @ColumnInfo(name = "day_wednesday")
-    private int day_wednesday;
+    private int dayWednesday;
 
     @ColumnInfo(name = "day_thursday")
-    private int day_thursday;
+    private int dayThursday;
 
     @ColumnInfo(name = "day_friday")
-    private int day_friday;
+    private int dayFriday;
 
     @ColumnInfo(name = "day_saturday")
-    private int day_saturday;
+    private int daySaturday;
 
     @ColumnInfo(name = "start_date")
-    private Date start_date;
+    private long startDate;
 
     @ColumnInfo(name = "end_date")
-    private Date end_date;
+    private long endDate;
 
-    @Ignore
-    private ArrayList<Integer> mWeekdays;
-
-    @Ignore
-    private ArrayList<String> mTimes;
-
-    @Ignore
-    private ArrayList<Date> mDates;
-
-
-    public PrescriptionInfo(@NonNull String medName, String medDescription, int medFrequency,
-                            String timeRemind, String timeRemind1, String timeRemind2, int day_sunday,
-                            int day_monday, int day_tuesday, int day_wednesday, int day_thursday,
-                            int day_friday, int day_saturday, Date start_date, Date end_date) {
+    public PrescriptionInfo(@NonNull String medName, String medDescription, int mFrequency,
+                            String timeRemind, String timeRemind1, String timeRemind2, int daySunday,
+                            int dayMonday, int dayTuesday, int dayWednesday, int dayThursday,
+                            int dayFriday, int daySaturday, long startDate, long endDate) {
         // Set the values.
         this.mMedName = medName;
         this.mMedDescription = medDescription;
-        this.mFrequency = medFrequency;
+        this.mFrequency = mFrequency;
         this.timeRemind = timeRemind; this.timeRemind1 = timeRemind1; this.timeRemind2 = timeRemind2;
-        this.day_sunday = day_sunday; this.day_monday = day_monday; this.day_tuesday = day_tuesday;
-        this.day_wednesday = day_wednesday; this.day_thursday = day_thursday;
-        this.day_friday = day_friday; this.day_saturday = day_saturday;
-        this.start_date = start_date; this.end_date = end_date;
-
-        // Put the time data into an array
-        mTimes.add(timeRemind); mTimes.add(timeRemind1); mTimes.add(timeRemind2);
-        // Put the days data into an array
-        mWeekdays.add(day_sunday); mWeekdays.add(day_monday); mWeekdays.add(day_tuesday);
-        mWeekdays.add(day_wednesday); mWeekdays.add(day_thursday); mWeekdays.add(day_friday);
-        mWeekdays.add(day_saturday);
-        // Put the dates into an array
-        mDates.add(start_date); mDates.add(end_date);
+        this.daySunday = daySunday; this.dayMonday = dayMonday; this.dayTuesday = dayTuesday;
+        this.dayWednesday = dayWednesday; this.dayThursday = dayThursday;
+        this.dayFriday = dayFriday; this.daySaturday = daySaturday;
+        this.startDate = startDate; this.endDate = endDate;
     }
 
-    public String getMedname() {return this.mMedName;}
+    protected PrescriptionInfo(Parcel in) {
+        mMedName = in.readString();
+        mMedDescription = in.readString();
+        mFrequency = in.readInt();
+        timeRemind = in.readString();
+        timeRemind1 = in.readString();
+        timeRemind2 = in.readString();
+        daySunday = in.readInt();
+        dayMonday = in.readInt();
+        dayTuesday = in.readInt();
+        dayWednesday = in.readInt();
+        dayThursday = in.readInt();
+        dayFriday = in.readInt();
+        daySaturday = in.readInt();
+        startDate = in.readLong();
+        endDate = in.readLong();
+
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mMedName);
+        dest.writeString(mMedDescription);
+        dest.writeInt(mFrequency);
+        dest.writeString(timeRemind);
+        dest.writeString(timeRemind1);
+        dest.writeString(timeRemind2);
+        dest.writeInt(daySunday);
+        dest.writeInt(dayMonday);
+        dest.writeInt(dayTuesday);
+        dest.writeInt(dayWednesday);
+        dest.writeInt(dayThursday);
+        dest.writeInt(dayFriday);
+        dest.writeInt(daySaturday);
+        dest.writeLong(startDate);
+        dest.writeLong(endDate);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<PrescriptionInfo> CREATOR = new Creator<PrescriptionInfo>() {
+        @Override
+        public PrescriptionInfo createFromParcel(Parcel in) {
+            return new PrescriptionInfo(in);
+        }
+
+        @Override
+        public PrescriptionInfo[] newArray(int size) {
+            return new PrescriptionInfo[size];
+        }
+    };
+
+    public String getMedName() {return this.mMedName;}
+    public void setMedName(String medName) {this.mMedName = medName;}
 
     public String getMedDescription() {return this.mMedDescription;}
+    public void setMedDescription(String description) {this.mMedDescription = description;}
 
     public int getFrequency() {return this.mFrequency;}
+    public void setFrequency(int freq) {this.mFrequency = freq;}
 
-    public List<String> getTimes() {return this.mTimes;}
+    public String getTimeRemind() {return this.timeRemind;}
+    public void setTimeRemind(String timeRemind) {this.timeRemind = timeRemind;}
 
-    public List<Integer> getWeekdays() {return this.mWeekdays;}
+    public String getTimeRemind1() {return this.timeRemind1;}
+    public void setTimeRemind1(String timeRemind1) {this.timeRemind1 = timeRemind1;}
 
-    public List<Date> getDates() {return this.mDates;}
+    public String getTimeRemind2() {return this.timeRemind2;}
+    public void setTimeRemind2(String timeRemind2) {this.timeRemind2 = timeRemind2;}
+
+    public int getDaySunday() {return this.daySunday;}
+    public void setDaySunday(int daySunday) {this.daySunday = daySunday;}
+
+    public int getDayMonday() {return this.dayMonday;}
+    public void setDayMonday(int dayMonday) {this.dayMonday = dayMonday;}
+
+    public int getDayTuesday() {return this.dayTuesday;}
+    public void setDayTuesday(int dayTuesday) {this.dayTuesday = dayTuesday;}
+
+    public int getDayWednesday() {return this.dayWednesday;}
+    public void setDayWednesday(int dayWednesday) {this.dayWednesday = dayWednesday;}
+
+    public int getDayThursday() {return this.dayThursday;}
+    public void setDayThursday(int dayThursday) {this.dayThursday = dayThursday;}
+
+    public int getDayFriday() {return this.dayFriday;}
+    public void setDayFriday(int dayFriday) {this.dayFriday = dayFriday;}
+
+    public int getDaySaturday() {return this.daySaturday;}
+    public void setDaySaturday(int daySaturday) {this.daySaturday = daySaturday;}
+
+    public long getStartDate() {return this.startDate;}
+    public void setStartDate(long startDate) {this.startDate = startDate;}
+
+    public long getEndDate() {return this.endDate;}
+    public void setEndDate(long endDate) {this.endDate = endDate;}
 }

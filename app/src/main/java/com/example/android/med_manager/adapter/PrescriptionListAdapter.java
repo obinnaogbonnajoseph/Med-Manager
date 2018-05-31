@@ -15,6 +15,8 @@ import com.example.android.med_manager.data.PrescriptionInfo;
 import java.util.Date;
 import java.util.List;
 
+import static com.example.android.med_manager.ui.PrescriptionActivity.sMonths;
+
 /**
  * This is an adapter that adapts the cardview to the
  * the recycler view
@@ -54,15 +56,15 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<
         if(mMeds != null) {
             // Set the start day, month, drug name and description
             PrescriptionInfo currentMed = mMeds.get(position);
-            // Get the start and end dates
-            List<Date> dates = currentMed.getDates();
-            Date startDate = dates.get(0);
+            // Get the start date
+           Date startDate = new Date(currentMed.getStartDate());
             // Set the start day
             holder.day.setText(DateFormat.format("dd", startDate));
             // Set the start month
-            holder.month.setText(DateFormat.format("MMM", startDate));
+            holder.month.setText(sMonths
+                    [Integer.valueOf((String)DateFormat.format("MM", startDate))]);
             // Set the drug name
-            holder.medName.setText(currentMed.getMedname());
+            holder.medName.setText(currentMed.getMedName());
             // Set the drug description
             holder.description.setText(currentMed.getMedDescription());
         } else {

@@ -6,14 +6,14 @@ import android.app.TimePickerDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.databinding.DataBindingUtil;
+import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -22,20 +22,23 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import com.example.android.med_manager.R;
-import com.example.android.med_manager.databinding.ContentPrescriptionBinding;
+import com.example.android.med_manager.data.PrescriptionInfo;
 import com.example.android.med_manager.model.MedViewModel;
-import com.example.android.med_manager.databinding.ActivityPrescriptionBinding;
 
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+
+import static com.example.android.med_manager.ui.HomePageActivity.PRESCRIPTION;
 
 public class PrescriptionActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -44,7 +47,6 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
     private int mFreq;
     // Checks if prescription has changed
     private boolean mPrescriptionChanged = false;
-    private ArrayList<Integer> mWeekDays = new ArrayList<>();
     // On touch listener
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @SuppressLint("ClickableViewAccessibility")
@@ -60,15 +62,40 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
 
     // Create a view model instance
     private MedViewModel mViewModel;
+    // Current prescription
+    PrescriptionInfo currentMed;
 
     // Create a binding instance
-    ActivityPrescriptionBinding mBinding;
-    ContentPrescriptionBinding binding;
+    // Field variables to be written to the database
+    private long mStartDateToDatabase;
+    private long mEndDateToDatabase;
+    private String mDescriptionTextToDatabase;
+    private int[] mDaysSelectedToDatabase = new int[7];
+    private String tRemind, tRemind1, tRemind2;
+    // Define the views
+    TextInputEditText mMedName;
+    Spinner mSpinner;
+    TextView mTimer,mTimer1,mTimer2,mStartDate,mStartYear,mEndDate,mEndYear;
+    Button mSelectWeekdayButton;
+    EditText mDescription;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_prescription);
+       setContentView(R.layout.activity_prescription);
+        // Set up the views
+        mMedName = findViewById(R.id.text_med_name);
+        mSpinner = findViewById(R.id.dialog_spinner);
+        mTimer = findViewById(R.id.text_med_time);
+        mTimer1 = findViewById(R.id.text_med_time_1);
+        mTimer2 = findViewById(R.id.text_med_time_2);
+        mSelectWeekdayButton = findViewById(R.id.btn_select_weekdays);
+        mStartDate = findViewById(R.id.text_start_date);
+        mStartYear = findViewById(R.id.text_start_year);
+        mEndDate = findViewById(R.id.text_end_date);
+        mEndYear = findViewById(R.id.text_end_year);
+        mDescription = findViewById(R.id.text_note);
         // set up the toolbar
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -77,9 +104,18 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
         }
         // Instantiate the view model
         mViewModel = ViewModelProviders.of(this).get(MedViewModel.class);
-        // Let's assume for now it's a new entry, so we invalidate options menu
-        invalidateOptionsMenu();
-        // TODO: Get the old values from the database
+        // This action should be performed when there is an available intent
+        Intent intent = getIntent();
+        if(intent.hasExtra(PRESCRIPTION)) {
+            Bundle bundle = intent.getBundleExtra(PRESCRIPTION);
+            currentMed = bundle.getParcelable(PRESCRIPTION);
+            // this means that this is a new entry
+            setTitle(getString(R.string.prescription_activity_edit_med));
+            // invalidate the options menu, so the "Delete" menu option is unavailable
+            invalidateOptionsMenu();
+            setUpViews();
+        }
+        setTitle(getString(R.string.title_activity_prescription));
         // Set up the on click for the views
         setUpClickListener();
         // Setup OnTouchListeners on necessary input fields, so we can determine if the user
@@ -89,8 +125,6 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
         // Set up the spinner
         setUpSpinner();
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,9 +142,10 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         // If this is a new entry, hide the "Delete" menu item.
-        // Let's assume for now it is always new, till we add the database
-        MenuItem menuItem = menu.findItem(R.id.action_delete);
-        menuItem.setVisible(false);
+        if(currentMed == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
@@ -187,7 +222,6 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
             case R.id.action_save:
                 // Save to database
                 savePrescription();
-                // Exit the activity
                 finish();
                 return true;
             case R.id.action_delete:
@@ -197,6 +231,7 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(DialogInterface dialog, int which) {
                         // User clicked the "Delete" button, hence entry is deleted
                         deletePrescription();
+                        finish();
                     }
                 };
 
@@ -207,6 +242,7 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                         // and continue editing the pet.
                         if (dialog != null) {
                             dialog.dismiss();
+                            finish();
                         }
                     }
                 };
@@ -228,9 +264,9 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                 DialogInterface.OnClickListener acceptSelectionButton = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // By now the selected items should have been added to the database.
                         // Dismiss dialog
                         if(dialog != null) dialog.dismiss();
-                        Log.d(PRESCRIPTION_LOG,"Contents of weekdays" + mWeekDays);
                     }
                 };
                 // Dialog cancel button
@@ -242,21 +278,36 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 };
-                // TODO: Get the previous data from the database, and load it to checked item
+                // Create a new boolean array
+                boolean[] checkedItems = new boolean[7];
+                // Check to see if this is an existing data or not
+                if(currentMed != null) {
+                    // Convert integer to boolean. if 1, return true, else, return false
+                    checkedItems[0] = intToBool(currentMed.getDaySunday());
+                    checkedItems[1] = intToBool(currentMed.getDayMonday());
+                    checkedItems[2] = intToBool(currentMed.getDayTuesday());
+                    checkedItems[3] = intToBool(currentMed.getDayWednesday());
+                    checkedItems[4] = intToBool(currentMed.getDayThursday());
+                    checkedItems[5] = intToBool(currentMed.getDayFriday());
+                    checkedItems[6] = intToBool(currentMed.getDaySaturday());
+                } else {
+                    // If this is not so make the checked items to be all equal to false
+                    int i = 0;
+                    while(i < 7) {
+                        checkedItems[i] = intToBool(0);
+                        i++;
+                    }
+                }
                 AlertDialog.Builder listBuilder = new AlertDialog.Builder(
                         PrescriptionActivity.this);
                 listBuilder.setTitle("WeekDays")
-                        .setMultiChoiceItems(R.array.week_days, null,
+                        .setMultiChoiceItems(R.array.week_days, checkedItems,
                                 new DialogInterface.
                                 OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                                // Perform an action if an option is selected
-                                if(isChecked) {
-                                    mWeekDays.add(which);
-                                } else if(mWeekDays.contains(which)) {
-                                    mWeekDays.remove(which);
-                                }
+                                // if checked, add 1, else add 0
+                               mDaysSelectedToDatabase[which] = isChecked ? 1 : 0;
                             }
                         })
                         .setPositiveButton("Done",acceptSelectionButton)
@@ -270,35 +321,40 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         String startDate = String.valueOf(dayOfMonth) + " " + sMonths[month];
                         String startYear = String.valueOf(year);
-                        // TODO: Add these strings to the database
-                        binding.textStartYear.setText(startYear);
-                        binding.textStartDate.setText(startDate);
+                        Calendar startDateCalendar = Calendar.getInstance();
+                        Date startDateInDate = startDateCalendar.getTime();
+                        mStartDateToDatabase = startDateInDate.getTime();
+                        mStartYear.setText(startYear);
+                        mStartDate.setText(startDate);
                     }
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.
                         get(Calendar.DAY_OF_MONTH)).show();
                 break;
             case R.id.text_end_date:
-                new DatePickerDialog(PrescriptionActivity.this, new DatePickerDialog.OnDateSetListener() {
+                new DatePickerDialog(PrescriptionActivity.this, new
+                        DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
                         String endDate = String.valueOf(dayOfMonth) + " " + sMonths[month];
                         String endYear = String.valueOf(year);
-                        // TODO: Add these strings to the database
-                        binding.textEndYear.setText(endYear);
-                        binding.textEndDate.setText(endDate);
+                        Calendar endDateCalendar = Calendar.getInstance();
+                        Date endDateInDate = endDateCalendar.getTime();
+                        mEndDateToDatabase = endDateInDate.getTime();
+                        mEndYear.setText(endYear);
+                        mEndDate.setText(endDate);
                     }
                 },calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.
                         get(Calendar.DAY_OF_MONTH)).show();
                 break;
             case R.id.text_med_time:
-                setReminder(binding.textMedTime);
+                tRemind = setReminder(mTimer);
                 break;
             case R.id.text_med_time_1:
-                setReminder(binding.textMedTime1);
+                tRemind1 = setReminder(mTimer1);
                 break;
             case R.id.text_med_time_2:
-                setReminder(binding.textMedTime2);
+                tRemind2 = setReminder(mTimer2);
                 break;
             case R.id.text_note:
                 // Set up the edit text to be displayed in dialog box
@@ -306,13 +362,14 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                 descriptionText.setImeOptions(EditorInfo.IME_ACTION_DONE);
                 descriptionText.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
                 // Get the previous text
-                descriptionText.setText(binding.textNote.getText().toString());
+                descriptionText.setText(mDescription.getText().toString());
                 // Dialog accept button
                 DialogInterface.OnClickListener doneButton = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Set the value of the edit text
-                        binding.textNote.setText(descriptionText.getText().toString());
+                        mDescriptionTextToDatabase = descriptionText.getText().toString();
+                        mDescription.setText(mDescriptionTextToDatabase);
                         if(dialog != null) {
                             dialog.dismiss();
                         }
@@ -336,6 +393,8 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    private boolean intToBool(int integer) { return integer == 1; }
+
     private void setUpSpinner() {
         // Create adapter for spinner. The list options are from the String array it will use
         // the spinner will use the default layout
@@ -346,30 +405,64 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
         freqSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
 
         // Apply the adapter to the spinner
-        binding.dialogSpinner.setAdapter(freqSpinnerAdapter);
-
-        // Set the integer mSelected to the constant values
-        binding.dialogSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinner.setAdapter(freqSpinnerAdapter);
+        // Get the previous selection from the database. This should be the default selection
+        // This is only done if this is an existing medication
+        // initialize the frequency
+        if(currentMed != null) {
+            mFreq = currentMed.getFrequency();
+            mSpinner.setSelection(mFreq);
+            // Load up the time from the database based on the value of freq
+            switch(mFreq){
+                case 0:
+                    // Be sure that the other views are invisible
+                    mTimer1.setVisibility(View.GONE);
+                    mTimer2.setVisibility(View.GONE);
+                    // Get the value of only one time
+                    if(currentMed.getTimeRemind() != null) {
+                        mTimer.setText(currentMed.getTimeRemind());
+                    }
+                    break;
+                case 1:
+                    // Be sure that the other views are invisible and right ones are visible
+                    mTimer1.setVisibility(View.VISIBLE);
+                    mTimer2.setVisibility(View.GONE);
+                    // Get the value of two times
+                    mTimer.setText(currentMed.getTimeRemind());
+                    mTimer1.setText(currentMed.getTimeRemind1());
+                    break;
+                case 2:
+                    // Be sure that the other views are invisible and right ones are visible
+                    mTimer1.setVisibility(View.VISIBLE);
+                    mTimer2.setVisibility(View.VISIBLE);
+                    // Get the values of the three times
+                    mTimer.setText(currentMed.getTimeRemind());
+                    mTimer1.setText(currentMed.getTimeRemind1());
+                    mTimer2.setText(currentMed.getTimeRemind2());
+            }
+        }
+        // Set the integer mFreq to the constant values
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selection = (String) parent.getItemAtPosition(position);
-                if (!TextUtils.isEmpty(selection)) {
-                    if (selection.equals(getString(R.string.freq_once))) {
+                String currentSelection = (String) parent.getItemAtPosition(position);
+                if (!TextUtils.isEmpty(currentSelection)) {
+                    if (currentSelection.equals(getString(R.string.freq_once))) {
                         mFreq = 0;
                         // Set the necessary timers to be visible
-                        binding.textMedTime1.setVisibility(View.GONE);
-                        binding.textMedTime2.setVisibility(View.GONE);
+                        mTimer1.setVisibility(View.GONE);
+                        mTimer2.setVisibility(View.GONE);
 
-                    } else if (selection.equals(getString(R.string.freq_twice))) {
+                    } else if (currentSelection.equals(getString(R.string.freq_twice))) {
                         mFreq = 1;
                         // Set the necessary timers to be visible
-                        binding.textMedTime1.setVisibility(View.VISIBLE);
-                        binding.textMedTime2.setVisibility(View.GONE);
-                    } else if (selection.equals(getString(R.string.freq_thrice))) {
+                        mTimer1.setVisibility(View.VISIBLE);
+                        mTimer2.setVisibility(View.GONE);
+                    } else if (currentSelection.equals(getString(R.string.freq_thrice))) {
                         mFreq = 2;
                         // Set the necessary timers to be visible
-                        binding.textMedTime1.setVisibility(View.VISIBLE);
-                        binding.textMedTime2.setVisibility(View.VISIBLE);
+                        mTimer1.setVisibility(View.VISIBLE);
+                        mTimer2.setVisibility(View.VISIBLE);
                     }
                 }
             }
@@ -377,33 +470,55 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
             // Because AdapterView is an abstract class, onNothingSelected must be defined
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                mFreq = 20;
+                mFreq = 0;
             }
         });
     }
 
-
     private void setUpClickListener() {
-        binding.btnSelectWeekdays.setOnClickListener(this);
-        binding.textNote.setOnClickListener(this);
-        binding.textStartDate.setOnClickListener(this);
-        binding.textEndDate.setOnClickListener(this);
-        binding.textMedTime.setOnClickListener(this);
-        binding.textMedTime1.setOnClickListener(this);
-        binding.textMedTime2.setOnClickListener(this);
+        mSelectWeekdayButton.setOnClickListener(this);
+        mDescription.setOnClickListener(this);
+        mStartDate.setOnClickListener(this);
+        mEndDate.setOnClickListener(this);
+        mTimer.setOnClickListener(this);
+        mTimer1.setOnClickListener(this);
+        mTimer2.setOnClickListener(this);
+    }
+
+    private void setUpViews() {
+        // Set the start date
+        long startDate = currentMed.getStartDate();
+        String startDay = (String) DateFormat.format("dd", startDate);
+        String startMonth = sMonths[Integer.
+                valueOf((String)DateFormat.format("MM",startDate))];
+        String startDateString = startDay + " " + startMonth;
+        mStartDate.setText(startDateString);
+        mStartYear.setText(DateFormat.format("YYYY",startDate));
+        // Set the end date
+        long endDate = currentMed.getEndDate();
+        String endDay = (String) DateFormat.format("dd", endDate);
+        String endMonth = sMonths[Integer.
+                valueOf((String)DateFormat.format("MM",endDate))];
+        String endDateString = endDay + " " + endMonth;
+        mEndDate.setText(endDateString);
+        mEndYear.setText(DateFormat.format("YYYY", endDate));
+        // Set the Med name
+        mMedName.setText(currentMed.getMedName());
+        // Set the Med description
+        mDescription.setText(currentMed.getMedDescription());
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void setUpTouchListener() {
-        binding.textMedName.setOnTouchListener(mTouchListener);
-        binding.textNote.setOnTouchListener(mTouchListener);
-        binding.dialogSpinner.setOnTouchListener(mTouchListener);
-        binding.textMedTime.setOnTouchListener(mTouchListener);
-        binding.textMedTime1.setOnTouchListener(mTouchListener);
-        binding.textMedTime2.setOnTouchListener(mTouchListener);
-        binding.btnSelectWeekdays.setOnTouchListener(mTouchListener);
-        binding.textStartDate.setOnTouchListener(mTouchListener);
-        binding.textEndDate.setOnTouchListener(mTouchListener);
+        mMedName.setOnTouchListener(mTouchListener);
+        mDescription.setOnTouchListener(mTouchListener);
+        mSpinner.setOnTouchListener(mTouchListener);
+        mTimer.setOnTouchListener(mTouchListener);
+        mTimer1.setOnTouchListener(mTouchListener);
+        mTimer2.setOnTouchListener(mTouchListener);
+        mSelectWeekdayButton.setOnTouchListener(mTouchListener);
+        mStartDate.setOnTouchListener(mTouchListener);
+        mEndDate.setOnTouchListener(mTouchListener);
     }
 
     private void showConfirmationDialog(String dialogMessage,
@@ -428,20 +543,26 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                 manager.hideSoftInputFromWindow(view.getWindowToken(),0);
             }
         }
-        // TODO: Add all entries to database
-        Toast.makeText(this,"Prescription added",Toast.LENGTH_SHORT).show();
+       // Get the med name and description
+        String medNameString= mMedName.getText().toString();
+        PrescriptionInfo newMed = new PrescriptionInfo(medNameString,mDescriptionTextToDatabase,
+                mFreq,tRemind, tRemind1, tRemind2,mDaysSelectedToDatabase[0],mDaysSelectedToDatabase[1],
+                mDaysSelectedToDatabase[2],mDaysSelectedToDatabase[3],mDaysSelectedToDatabase[4],
+                mDaysSelectedToDatabase[5],mDaysSelectedToDatabase[6],mStartDateToDatabase,
+                mEndDateToDatabase);
+        mViewModel.insert(newMed);
     }
 
 
     private void deletePrescription() {
-        //TODO: Delete the entry
-        // Exit the activity
-        finish();
+        //Delete the entry
+        mViewModel.delete(currentMed);
     }
 
-    private void setReminder(final TextView timeSet) {
+    private String setReminder(final TextView timeSet) {
         // Get the current date, minute and hour
         Calendar currentTime = Calendar.getInstance();
+        final String[] selectedTime = new String[1];
         // Initialize the time picker
         TimePickerDialog timePicker;
         timePicker = new TimePickerDialog(PrescriptionActivity.this,
@@ -467,14 +588,14 @@ public class PrescriptionActivity extends AppCompatActivity implements View.OnCl
                 } else if(currentHour < 10) {
                     hourString = "0" + String.valueOf(currentHour);
                 }
-                String selectedTime = hourString + ":" + minuteString
+                selectedTime[0] = hourString + ":" + minuteString
                         + " " + aMpM;
-                timeSet.setText(selectedTime);
+                timeSet.setText(selectedTime[0]);
             }
         },currentTime.get(Calendar.HOUR_OF_DAY),currentTime.get(Calendar.MINUTE),
                 DateFormat.is24HourFormat(PrescriptionActivity.this));
         timePicker.setTitle("Select time");
-        // TODO: Save the string to the database
         timePicker.show();
+        return selectedTime[0];
     }
 }

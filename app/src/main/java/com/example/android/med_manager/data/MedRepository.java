@@ -39,9 +39,8 @@ public class MedRepository {
         new updateAsyncTask(mMedDao).execute(prescription);
     }
 
-    public LiveData<List<PrescriptionInfo>> query(String search) {
-        new queryAsyncTask(mMedDao).execute(search);
-        return queryAsyncTask.searchResult();
+    public List<PrescriptionInfo> query(String search) {
+        return mMedDao.getResults(search);
     }
 
     private static class insertAsyncTask extends AsyncTask<PrescriptionInfo, Void, Void> {
@@ -80,29 +79,6 @@ public class MedRepository {
         protected Void doInBackground(PrescriptionInfo... prescriptionInfos) {
             mAsyncTaskDao.updateMeds(prescriptionInfos[0]);
             return null;
-        }
-    }
-
-    private static class queryAsyncTask extends AsyncTask<String, Void, LiveData<List<PrescriptionInfo>>> {
-
-        private MedDao sAsyncTaskDao;
-        private static LiveData<List<PrescriptionInfo>> sResults;
-
-        queryAsyncTask(MedDao dao) {sAsyncTaskDao = dao;}
-
-        @Override
-        protected LiveData<List<PrescriptionInfo>> doInBackground(String... strings) {
-            return sAsyncTaskDao.getResults(strings[0]);
-        }
-
-        @Override
-        protected void onPostExecute(LiveData<List<PrescriptionInfo>> listLiveData) {
-            super.onPostExecute(listLiveData);
-            listLiveData = sResults;
-        }
-
-        public static LiveData<List<PrescriptionInfo>> searchResult() {
-            return sResults;
         }
     }
 }

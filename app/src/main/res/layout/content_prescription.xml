@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<layout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -88,7 +88,8 @@
                     android:text="08:45 AM"
                     android:clickable="true"
                     app:layout_constraintTop_toBottomOf="@+id/dialog_spinner"
-                    app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"/>
+                    app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
                 <TextView
                     android:id="@+id/text_med_time_1"
@@ -103,7 +104,8 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@+id/text_med_time"
                     app:layout_constraintBottom_toBottomOf="@+id/text_med_time"
-                    app:layout_constraintLeft_toRightOf="@+id/text_med_time"/>
+                    app:layout_constraintLeft_toRightOf="@+id/text_med_time"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
                 <TextView
                     android:id="@+id/text_med_time_2"
@@ -118,7 +120,8 @@
                     android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@+id/text_med_time_1"
                     app:layout_constraintBottom_toBottomOf="@+id/text_med_time_1"
-                    app:layout_constraintLeft_toRightOf="@+id/text_med_time_1"/>
+                    app:layout_constraintLeft_toRightOf="@+id/text_med_time_1"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
                 <Button
                     android:id="@+id/btn_select_weekdays"
@@ -135,15 +138,15 @@
 
                 <TextView
                     android:id="@+id/text_duration"
-                    android:layout_width="336dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="50dp"
                     android:text="@string/title_duration"
                     android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
                     app:layout_constraintLeft_toLeftOf="@+id/dialog_spinner"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_select_weekdays" />
+                    app:layout_constraintTop_toBottomOf="@+id/text_med_time" />
 
                 <TextView
                     android:id="@+id/text_start_date"
@@ -159,7 +162,8 @@
                     android:textStyle="bold"
                     app:layout_constraintLeft_toLeftOf="@+id/text_duration"
                     app:layout_constraintTop_toBottomOf="@+id/text_duration"
-                    android:text="12 June"/>
+                    android:text="12 June"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
                 <TextView
                     android:id="@+id/text_start_year"
@@ -188,7 +192,8 @@
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/text_start_date"
                     app:layout_constraintBottom_toBottomOf="@+id/text_start_date"
-                    android:text="24 July" />
+                    android:text="24 July"
+                    tools:ignore="KeyboardInaccessibleWidget" />
 
                 <TextView
                     android:id="@+id/text_end_year"

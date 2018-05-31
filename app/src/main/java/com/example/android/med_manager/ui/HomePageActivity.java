@@ -21,12 +21,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -43,36 +45,38 @@ import android.widget.Toast;
 import com.example.android.med_manager.R;
 import com.example.android.med_manager.adapter.PrescriptionListAdapter;
 import com.example.android.med_manager.data.PrescriptionInfo;
-import com.example.android.med_manager.databinding.ActivityHomePageBinding;
-import com.example.android.med_manager.databinding.ContentHomePageBinding;
 import com.example.android.med_manager.model.MedViewModel;
 
-import java.util.Date;
 import java.util.List;
 
 
 public class HomePageActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         PrescriptionListAdapter.AdapterOnClickHandler {
+    // Constant class for bundle
+    public static final String PRESCRIPTION = "com.example.android.med_manager.PRESCRIPTION";
     // View Model instance
     private MedViewModel mModel;
-    // DataBinding instance
-    ActivityHomePageBinding mBinding;
-    ContentHomePageBinding binding;
+    // Views
+    RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home_page);
+       setContentView(R.layout.activity_home_page);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         // get view model form ViewModelProvider
         mModel = ViewModelProviders.of(this).get(MedViewModel.class);
 
-        // Set up the recycler view
+        // Set up the views
+        mRecyclerView = findViewById(R.id.my_recycler_view);
         final PrescriptionListAdapter adapter = new PrescriptionListAdapter(this, this);
-        binding.myRecyclerView.setAdapter(adapter);
-        binding.myRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DividerItemDecoration verticalDivider = new DividerItemDecoration(mRecyclerView.getContext()
+                ,LinearLayoutManager.VERTICAL);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(verticalDivider);
 
         // add observer for LiveData returned by getAllMeds()
         mModel.getAllMeds().observe(this, new Observer<List<PrescriptionInfo>>() {
@@ -109,7 +113,11 @@ public class HomePageActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         // Check to see if database is empty or not
-        layout.setVisibility(View.VISIBLE);
+        if (mModel.getAllMeds() != null) {
+            // Hide the empty view and show the recycler view
+            layout.setVisibility(View.GONE);
+        } else layout.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -189,20 +197,30 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     public void onClick(PrescriptionInfo prescription) {
         // Get the necessary objects to be sent to the prescription activity
-        List<Date> dates = prescription.getDates();
-        List<String> times = prescription.getTimes();
-        List<Integer> weekdays = prescription.getWeekdays();
-        int freq = prescription.getFrequency();
-        String medDescription = prescription.getMedDescription();
-        String medName = prescription.getMedname();
+        Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PRESCRIPTION, prescription);
+        intent.putExtra(PRESCRIPTION,bundle);
+        startActivity(intent);
     }
 
     private void handleIntent(Intent intent) {
         if(Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             // Search for the data
-
+            List<PrescriptionInfo> searchResults = mModel.query(query);
+            // TODO: 1. Populate a list adapter
+            // TODO: 2. Set an on click to lead to a prescription.
+            // TODO: 3. Implement a search suggestion
             Toast.makeText(this,query+" received",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public class VerticalDecoration extends RecyclerView.ItemDecoration {
+        
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
         }
     }
 }
