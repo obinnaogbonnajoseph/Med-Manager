@@ -26,7 +26,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -59,6 +58,7 @@ public class HomePageActivity extends AppCompatActivity
     private MedViewModel mModel;
     // Views
     RecyclerView mRecyclerView;
+    private LinearLayout mLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +71,13 @@ public class HomePageActivity extends AppCompatActivity
 
         // Set up the views
         mRecyclerView = findViewById(R.id.my_recycler_view);
+        // Finds the empty view mLinearLayout
+        mLinearLayout = findViewById(R.id.empty_view);
         final PrescriptionListAdapter adapter = new PrescriptionListAdapter(this, this);
-        DividerItemDecoration verticalDivider = new DividerItemDecoration(mRecyclerView.getContext()
-                ,LinearLayoutManager.VERTICAL);
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(verticalDivider);
+        // Add a custom decoration to the recycler view
+        mRecyclerView.addItemDecoration(new VerticalDecoration());
 
         // add observer for LiveData returned by getAllMeds()
         mModel.getAllMeds().observe(this, new Observer<List<PrescriptionInfo>>() {
@@ -84,14 +85,21 @@ public class HomePageActivity extends AppCompatActivity
             public void onChanged(@Nullable List<PrescriptionInfo> prescriptionInfos) {
                 // Update the cached copy of the data in the adapter
                 adapter.setPrescriptions(prescriptionInfos);
+                // Set up the empty view listener
+                if (prescriptionInfos != null) {
+                    if(prescriptionInfos.isEmpty()) {
+                        mLinearLayout.setVisibility(View.VISIBLE);
+                        mRecyclerView.setVisibility(View.GONE);
+                    } else {
+                        mLinearLayout.setVisibility(View.GONE);
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
 
         // Handle the search intent
         handleIntent(getIntent());
-
-        // Finds the empty view layout
-        LinearLayout layout = findViewById(R.id.empty_view);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -111,13 +119,11 @@ public class HomePageActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
 
-        // Check to see if database is empty or not
-        if (mModel.getAllMeds() != null) {
-            // Hide the empty view and show the recycler view
-            layout.setVisibility(View.GONE);
-        } else layout.setVisibility(View.VISIBLE);
-
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -197,6 +203,7 @@ public class HomePageActivity extends AppCompatActivity
     @Override
     public void onClick(PrescriptionInfo prescription) {
         // Get the necessary objects to be sent to the prescription activity
+        Toast.makeText(this,"View clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(HomePageActivity.this, PrescriptionActivity.class);
         Bundle bundle = new Bundle();
         bundle.putParcelable(PRESCRIPTION, prescription);
@@ -221,6 +228,8 @@ public class HomePageActivity extends AppCompatActivity
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
+            // Set the divider values to a specific value
+            outRect.bottom = 56;
         }
     }
 }
