@@ -3,7 +3,7 @@ package com.example.android.med_manager.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateFormat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +13,9 @@ import com.example.android.med_manager.R;
 import com.example.android.med_manager.data.PrescriptionInfo;
 
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
 
-import static com.example.android.med_manager.ui.PrescriptionActivity.sMonths;
 
 /**
  * This is an adapter that adapts the cardview to the
@@ -59,17 +59,28 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<
             // Get the start date
            Date startDate = new Date(currentMed.getStartDate());
             // Set the start day
-            holder.day.setText(DateFormat.format("dd", startDate));
+            Formatter fmt = new Formatter();
+            holder.day.setText(fmt.format("%td",startDate).toString());
             // Set the start month
-            holder.month.setText(sMonths
-                    [Integer.valueOf((String)DateFormat.format("MM", startDate))]);
+            fmt = new Formatter();
+            holder.month.setText(fmt.format("%tb",startDate).toString());
             // Set the drug name
             holder.medName.setText(currentMed.getMedName());
             // Set the drug description
+            if(!TextUtils.isEmpty(currentMed.getMedDescription())) {
+                String noDesc = "No Description";
+                holder.description.setText(noDesc);
+            }
             holder.description.setText(currentMed.getMedDescription());
         } else {
             // Covers the case of data not being ready yet.
-            // Do nothing for now.
+            String noDay = "00";
+            String noMonth = "Null";
+            String noData = "No Data";
+            holder.day.setText(noDay);
+            holder.month.setText(noMonth);
+            holder.medName.setText(noData);
+            holder.description.setText(noData);
         }
     }
 
@@ -91,12 +102,13 @@ public class PrescriptionListAdapter extends RecyclerView.Adapter<
 
         private final TextView day, month, medName, description;
 
-        public PrescriptionViewHolder(View itemView) {
+        PrescriptionViewHolder(View itemView) {
             super(itemView);
             day = itemView.findViewById(R.id.date);
             month = itemView.findViewById(R.id.month);
             medName = itemView.findViewById(R.id.med_name);
             description = itemView.findViewById(R.id.med_description);
+            itemView.setOnClickListener(this);
         }
 
         @Override
