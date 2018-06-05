@@ -68,4 +68,5 @@
 
     <string name="action_settings">Settings</string>
     <string name="prescription_activity_edit_med">Edit Prescription</string>
+    <string name="search_hint">Search Medication</string>
 </resources>
